@@ -55,15 +55,15 @@ mybatis:
 
 #pagehelper
 pagehelper:
-    helperDialect: mysql
-    reasonable: true
-    supportMethodsArguments: true
-    params: count=countSql
-    returnPageInfo: check
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  returnPageInfo: check
 
 logging:
   level:
-    cn.luischen.dao : DEBUG
+    cn.luischen.dao: DEBUG
 
 swagger:
   show: true

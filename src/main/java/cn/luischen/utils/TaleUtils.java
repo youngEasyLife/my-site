@@ -114,6 +114,12 @@ public class TaleUtils {
         return hexString.toString();
     }
 
+
+    public static void main(String args[]) {
+        System.out.println(MD5encode("qy123456"));
+
+    }
+
     /**
      * 获取新的数据源
      *
@@ -350,7 +356,6 @@ public class TaleUtils {
         }
         return false;
     }
-
 
 
     /**

@@ -444,6 +444,7 @@ public class HomeController extends BaseController{
         ContentCond contentCond = new ContentCond();
         contentCond.setType(Types.PHOTO.getType());
         PageInfo<ContentDomain> articles = contentService.getArticlesByCond(contentCond, page, limit);
+
         request.setAttribute("archives", articles);
         request.setAttribute("active", "work");
         return "site/index";

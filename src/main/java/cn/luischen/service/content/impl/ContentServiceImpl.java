@@ -166,4 +166,12 @@ public class ContentServiceImpl implements ContentService {
         PageInfo<ContentDomain> pageInfo = new PageInfo<>(contentDomains);
         return pageInfo;
     }
+    
+    
+    private void getAccessToken(){
+        
+        
+    }
+    
+    
 }

@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+import static cn.luischen.api.senEmail.sendMailBySSL;
+import static cn.luischen.service.commEmail.sendTextMail;
+
 /**
  * Created by Donghua.Chen on 2018/4/20.
  */
@@ -44,9 +47,20 @@ public class UserServiceImpl implements UserService {
 
         String pwd = TaleUtils.MD5encode(username + password);
         UserDomain user = userDao.getUserInfoByCond(username, pwd);
-        if (null == user)
+        if (null == user) {
             throw BusinessException.withErrorCode(ErrorConstant.Auth.USERNAME_PASSWORD_ERROR);
-
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (sendMailBySSL(user.getEmail(), "测试邮箱发送", "你们好吗???欢迎登陆本系统"))
+                        System.out.println("QQ邮件发送成功");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         return user;
     }
 

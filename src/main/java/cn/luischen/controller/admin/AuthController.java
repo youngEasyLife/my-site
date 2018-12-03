@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Calendar;
 
 /**
  * Created by Donghua.Chen on 2018/4/30.
@@ -32,7 +33,7 @@ import java.io.IOException;
 @Api("登录相关接口")
 @Controller
 @RequestMapping(value = "/admin")
-public class AuthController extends BaseController{
+public class AuthController extends BaseController {
 
     private static final Logger LOGGER = LogManager.getLogger(AuthController.class);
 
@@ -44,7 +45,7 @@ public class AuthController extends BaseController{
 
     @ApiOperation("跳转登录页")
     @GetMapping(value = "/login")
-    public String login(){
+    public String login() {
         return "admin/login";
     }
 
@@ -56,14 +57,14 @@ public class AuthController extends BaseController{
             HttpServletResponse response,
             @ApiParam(name = "username", value = "用户名", required = true)
             @RequestParam(name = "username", required = true)
-            String username,
+                    String username,
             @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam(name = "password", required = true)
-            String password,
+                    String password,
             @ApiParam(name = "remeber_me", value = "记住我", required = false)
             @RequestParam(name = "remeber_me", required = false)
-            String remeber_me
-    ){
+                    String remeber_me
+    ) {
         Integer error_count = cache.get("login_error_count");
         try {
             UserDomain userInfo = userService.login(username, password);
@@ -71,7 +72,7 @@ public class AuthController extends BaseController{
             if (StringUtils.isNotBlank(remeber_me)) {
                 TaleUtils.setCookie(response, userInfo.getUid());
             }
-            logService.addLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), userInfo.getUid());
+            logService.addLog(userInfo.getUsername() + LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), userInfo.getUid());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             error_count = null == error_count ? 1 : error_count + 1;

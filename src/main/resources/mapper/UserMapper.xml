@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.luischen.dao.UserDao" >
+<mapper namespace="cn.luischen.dao.UserDao">
     <sql id="BASE_TABLE">
         t_users
+    </sql>
+
+    <sql id="BASE_PV">
+        t_pv
     </sql>
 
     <sql id="BASE_COLUMN">
@@ -11,7 +15,7 @@
 
     <update id="updateUserInfo" parameterType="cn.luischen.model.UserDomain">
         UPDATE
-          <include refid="BASE_TABLE"/>
+        <include refid="BASE_TABLE"/>
         <set>
             <if test="password != null">
                 password = #{password, jdbcType=VARCHAR},
@@ -50,5 +54,28 @@
         </where>
     </select>
 
+    <insert id="insertTPv" parameterType="cn.luischen.model.PvDomain">
+        INSERT INTO
+        <include refid="BASE_PV"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, ip, created
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{id, jdbcType=VARCHAR},#{ip, jdbcType=VARCHAR}, UNIX_TIMESTAMP(NOW()),
+        </trim>
+    </insert>
+
+
+    <select id="getPvCount" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM
+        <include refid="BASE_PV"/>
+    </select>
+
+    <select id="getUvCount" resultType="java.lang.Long">
+        SELECT count(distinct ip)
+        FROM
+        <include refid="BASE_PV"/>
+    </select>
 
 </mapper>

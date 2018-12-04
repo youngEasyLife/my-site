@@ -46,6 +46,8 @@ public class AuthController extends BaseController {
     @ApiOperation("跳转登录页")
     @GetMapping(value = "/login")
     public String login() {
+        Integer error_count = cache.get("login_error_count");
+        System.out.println("获取失败次数" + error_count);
         return "admin/login";
     }
 
@@ -66,16 +68,22 @@ public class AuthController extends BaseController {
                     String remeber_me
     ) {
         Integer error_count = cache.get("login_error_count");
+        System.out.println("登陆失败次数--------->" + error_count);
+        error_count = null == error_count ? 1 : error_count;
+        if (error_count > 3) {
+            return APIResponse.fail("您输入密码已经错误超过3次，请10分钟后尝试");
+        }
         try {
             UserDomain userInfo = userService.login(username, password);
             request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, userInfo);
             if (StringUtils.isNotBlank(remeber_me)) {
                 TaleUtils.setCookie(response, userInfo.getUid());
             }
+            cache.set("login_error_count", 0);
             logService.addLog(userInfo.getUsername() + LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), userInfo.getUid());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            error_count = null == error_count ? 1 : error_count + 1;
+            error_count += 1;
             if (error_count > 3) {
                 return APIResponse.fail("您输入密码已经错误超过3次，请10分钟后尝试");
             }

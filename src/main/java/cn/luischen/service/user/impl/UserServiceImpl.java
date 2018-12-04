@@ -4,6 +4,7 @@ import cn.luischen.constant.ErrorConstant;
 import cn.luischen.dao.UserDao;
 import cn.luischen.dto.cond.UserCond;
 import cn.luischen.exception.BusinessException;
+import cn.luischen.model.PvDomain;
 import cn.luischen.model.UserDomain;
 import cn.luischen.service.user.UserService;
 import cn.luischen.utils.TaleUtils;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
+import java.util.UUID;
 
 import static cn.luischen.api.senEmail.sendMailBySSL;
 import static cn.luischen.service.commEmail.sendTextMail;
@@ -44,7 +47,6 @@ public class UserServiceImpl implements UserService {
     public UserDomain login(String username, String password) {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password))
             throw BusinessException.withErrorCode(ErrorConstant.Auth.USERNAME_PASSWORD_IS_EMPTY);
-
         String pwd = TaleUtils.MD5encode(username + password);
         UserDomain user = userDao.getUserInfoByCond(username, pwd);
         if (null == user) {
@@ -54,8 +56,8 @@ public class UserServiceImpl implements UserService {
             @Override
             public void run() {
                 try {
-                    if (sendMailBySSL(user.getEmail(), "测试邮箱发送", "你们好吗???欢迎登陆本系统"))
-                        System.out.println("QQ邮件发送成功");
+                    if (sendMailBySSL(user.getEmail(), "欢迎登陆本系统", user.getUsername() + "你好吗?好久不见,欢迎登陆youngEasyLife系统,请多指教"))
+                        System.out.println("邮件发送成功");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -64,5 +66,11 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-
+    @Override
+    public int insertTPv(String ip) {
+        PvDomain pvDomain = new PvDomain();
+        pvDomain.setId(UUID.randomUUID().toString());
+        pvDomain.setIp(ip);
+        return userDao.insertTPv(pvDomain);
+    }
 }

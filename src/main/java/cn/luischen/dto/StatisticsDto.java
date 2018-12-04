@@ -23,6 +23,26 @@ public class StatisticsDto {
      */
     private Long attachs;
 
+    private Long pv;
+
+    private Long uv;
+
+    public Long getPv() {
+        return pv;
+    }
+
+    public void setPv(Long pv) {
+        this.pv = pv;
+    }
+
+    public Long getUv() {
+        return uv;
+    }
+
+    public void setUv(Long uv) {
+        this.uv = uv;
+    }
+
     public Long getArticles() {
         return articles;
     }

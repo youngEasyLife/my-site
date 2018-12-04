@@ -13,6 +13,7 @@ import cn.luischen.service.content.ContentService;
 import cn.luischen.service.meta.MetaService;
 import cn.luischen.service.option.OptionService;
 import cn.luischen.service.site.SiteService;
+import cn.luischen.service.user.UserService;
 import cn.luischen.utils.*;
 import com.github.pagehelper.PageInfo;
 import com.vdurmont.emoji.EmojiParser;
@@ -39,7 +40,7 @@ import java.util.List;
  */
 @Api("网站首页和关于页面")
 @Controller
-public class HomeController extends BaseController{
+public class HomeController extends BaseController {
 
     @Autowired
     private ContentService contentService;
@@ -55,27 +56,27 @@ public class HomeController extends BaseController{
 
     @Autowired
     private OptionService optionService;
-
+    @Autowired
+    private UserService userService;
 
 
     @ApiIgnore
     @GetMapping(value = {"/about", "/about/index"})
-    public String getAbout(HttpServletRequest request){
+    public String getAbout(HttpServletRequest request) {
         this.blogBaseData(request, null);//获取友链
-        request.setAttribute("active","about");
+        request.setAttribute("active", "about");
         return "site/about";
     }
 
 
-
     @ApiOperation("blog首页")
-    @GetMapping(value = {"/blog/","/blog/index"})
+    @GetMapping(value = {"/blog/", "/blog/index"})
     public String blogIndex(
             HttpServletRequest request,
             @ApiParam(name = "limit", value = "页数", required = false)
             @RequestParam(name = "limit", required = false, defaultValue = "11")
                     int limit
-    ){
+    ) {
         return this.blogIndex(request, 1, limit);
     }
 
@@ -87,7 +88,7 @@ public class HomeController extends BaseController{
                     int p,
             @RequestParam(value = "limit", required = false, defaultValue = "11")
                     int limit
-    ){
+    ) {
         p = p < 0 || p > WebConst.MAX_PAGE ? 1 : p;
         ContentCond contentCond = new ContentCond();
         contentCond.setType(Types.ARTICLE.getType());
@@ -95,6 +96,8 @@ public class HomeController extends BaseController{
         request.setAttribute("articles", articles);//文章列表
         request.setAttribute("type", "articles");
         request.setAttribute("active", "blog");
+
+
 //        this.blogBaseData(request, contentCond);//获取公共分类标签等数据
         return "site/blog";
     }
@@ -106,20 +109,21 @@ public class HomeController extends BaseController{
             @PathVariable("cid")
                     Integer cid,
             HttpServletRequest request
-    ){
+    ) {
         ContentDomain atricle = contentService.getAtricleById(cid);
         request.setAttribute("article", atricle);
         ContentCond contentCond = new ContentCond();
         contentCond.setType(Types.ARTICLE.getType());
 //        this.blogBaseData(request, contentCond);//获取公共分类标签等数据
         //更新文章的点击量
-        this.updateArticleHit(atricle.getCid(),atricle.getHits());
+        this.updateArticleHit(atricle.getCid(), atricle.getHits());
         List<CommentDomain> commentsPaginator = commentService.getCommentsByCId(cid);
         request.setAttribute("comments", commentsPaginator);
-        request.setAttribute("active","blog");
+        request.setAttribute("active", "blog");
         return "site/blog-details";
 
     }
+
     /**
      * 更新文章的点击率
      *
@@ -144,7 +148,6 @@ public class HomeController extends BaseController{
     }
 
 
-
     @ApiOperation("归档页-按日期")
     @GetMapping(value = "/blog/archives/{date}")
     public String archives(
@@ -152,7 +155,7 @@ public class HomeController extends BaseController{
             @PathVariable("date")
                     String date,
             HttpServletRequest request
-    ){
+    ) {
         ContentCond contentCond = new ContentCond();
         Date sd = DateKit.dateFormat(date, "yyyy年MM月");
         int start = DateKit.getUnixTimeByDate(sd);
@@ -161,12 +164,10 @@ public class HomeController extends BaseController{
         contentCond.setEndTime(end);
         contentCond.setType(Types.ARTICLE.getType());
         List<ArchiveDto> archives = siteService.getArchives(contentCond);
-        request.setAttribute("archives_list",archives);
+        request.setAttribute("archives_list", archives);
 //        this.blogBaseData(request, contentCond);//获取公共分类标签等数据
         return "blog/archives";
     }
-
-
 
 
     @ApiOperation("归档页-按年份")
@@ -176,7 +177,7 @@ public class HomeController extends BaseController{
             @PathVariable("year")
                     String year,
             HttpServletRequest request
-    ){
+    ) {
         ContentCond contentCond = new ContentCond();
         int start = DateKit.getUnixTimeByDate(DateKit.getYearStartDay(year, "yyyy"));
         int end = DateKit.getUnixTimeByDate(DateKit.getYearEndDay(year, "yyyy"));
@@ -184,22 +185,19 @@ public class HomeController extends BaseController{
         contentCond.setEndTime(end);
         contentCond.setType(Types.ARTICLE.getType());
         List<ArchiveDto> archives = siteService.getArchives(contentCond);
-        request.setAttribute("archives_list",archives);
+        request.setAttribute("archives_list", archives);
 //        this.blogBaseData(request, contentCond);//获取公共分类标签等数据
         return "blog/archives";
     }
 
 
-
-
-
     @ApiOperation("归档页")
     @GetMapping(value = {"/blog/archives", "/blog/archives/index"})
-    public String archives(HttpServletRequest request){
+    public String archives(HttpServletRequest request) {
         ContentCond contentCond = new ContentCond();
         contentCond.setType(Types.ARTICLE.getType());
         List<ArchiveDto> archives = siteService.getArchives(contentCond);
-        request.setAttribute("archives_list",archives);
+        request.setAttribute("archives_list", archives);
 //        this.blogBaseData(request,contentCond);//获取公共分类标签等数据
         return "blog/archives";
     }
@@ -212,8 +210,8 @@ public class HomeController extends BaseController{
             @PathVariable("category")
                     String category,
             HttpServletRequest request
-    ){
-        return  this.categories(category, 1, 10, request);
+    ) {
+        return this.categories(category, 1, 10, request);
     }
 
     @ApiOperation("分类-分页")
@@ -229,7 +227,7 @@ public class HomeController extends BaseController{
             @RequestParam(name = "limit", required = false, defaultValue = "10")
                     int limit,
             HttpServletRequest request
-    ){
+    ) {
         ContentCond contentCond = new ContentCond();
         contentCond.setType(Types.ARTICLE.getType());
         contentCond.setCategory(category);
@@ -249,7 +247,7 @@ public class HomeController extends BaseController{
             @PathVariable("tag")
                     String tag,
             HttpServletRequest request
-    ){
+    ) {
         return this.tags(tag, 1, 10, request);
     }
 
@@ -266,7 +264,7 @@ public class HomeController extends BaseController{
             @RequestParam(name = "limit", required = false, defaultValue = "10")
                     int limit,
             HttpServletRequest request
-    ){
+    ) {
         ContentCond contentCond = new ContentCond();
         contentCond.setTag(tag);
         contentCond.setType(Types.ARTICLE.getType());
@@ -285,7 +283,7 @@ public class HomeController extends BaseController{
             @RequestParam(name = "param", required = true)
                     String param,
             HttpServletRequest request
-    ){
+    ) {
         return this.search(param, 1, 10, request);
     }
 
@@ -302,7 +300,7 @@ public class HomeController extends BaseController{
             @RequestParam(name = "limit", required = false, defaultValue = "10")
                     int limit,
             HttpServletRequest request
-    ){
+    ) {
         PageInfo<ContentDomain> pageInfo = contentService.searchArticle(param, page, limit);
         ContentCond contentCond = new ContentCond();
         contentCond.setType(Types.ARTICLE.getType());
@@ -406,7 +404,6 @@ public class HomeController extends BaseController{
     }
 
 
-
     /**
      * 设置cookie
      *
@@ -426,7 +423,16 @@ public class HomeController extends BaseController{
     @ApiOperation("作品主页")
     @GetMapping(value = {"", "/index"})
     public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+        String ip = getRemortIP(request);
+        userService.insertTPv(ip);
         return this.index(1, limit, request);
+    }
+
+    public String getRemortIP(HttpServletRequest request) {
+        if (request.getHeader("x-forwarded-for") == null) {
+            return request.getRemoteAddr();
+        }
+        return request.getHeader("x-forwarded-for");
     }
 
     @ApiOperation("作品主页-分页")
@@ -439,7 +445,7 @@ public class HomeController extends BaseController{
             @RequestParam(name = "limit", required = false, defaultValue = "9999")
                     int limit,
             HttpServletRequest request
-    ){
+    ) {
         page = page < 0 || page > WebConst.MAX_PAGE ? 1 : page;
         ContentCond contentCond = new ContentCond();
         contentCond.setType(Types.PHOTO.getType());
@@ -457,16 +463,12 @@ public class HomeController extends BaseController{
             @PathVariable("cid")
                     Integer cid,
             HttpServletRequest request
-    ){
+    ) {
         ContentDomain article = contentService.getAtricleById(cid);
         request.setAttribute("archive", article);
-        request.setAttribute("active","work");
+        request.setAttribute("active", "work");
         return "site/works-details";
     }
-
-
-
-
 
 
 }

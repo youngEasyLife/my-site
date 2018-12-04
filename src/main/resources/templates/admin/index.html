@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-sm-5 col-lg-2">
                             <div class="mini-stat clearfix bx-shadow bg-info">
                                 <span class="mini-stat-icon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
                                 <div class="mini-stat-info text-right">
@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-sm-5 col-lg-2">
                             <div class="mini-stat clearfix bg-purple bx-shadow">
                                 <span class="mini-stat-icon"><i class="fa fa-comments-o" aria-hidden="true"></i></span>
                                 <div class="mini-stat-info text-right">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-sm-5 col-lg-2">
                             <div class="mini-stat clearfix bg-success bx-shadow">
                                 <span class="mini-stat-icon"><i class="fa fa-cloud-upload"
                                                                 aria-hidden="true"></i></span>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-sm-5 col-lg-2">
                             <div class="mini-stat clearfix bg-primary bx-shadow">
                                 <span class="mini-stat-icon"><i class="fa fa-link" aria-hidden="true"></i></span>
                                 <div class="mini-stat-info text-right">
@@ -48,6 +48,25 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-5 col-lg-2">
+                            <div class="mini-stat clearfix bg-warning bx-shadow">
+                                <span class="mini-stat-icon"><i class="fa fa-copy" aria-hidden="true"></i></span>
+                                <div class="mini-stat-info text-right">
+                                    历史pv <span class="counter" th:text="${statistics.pv}"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5 col-lg-2">
+                            <div class="mini-stat clearfix bg-info bx-shadow">
+                                <span class="mini-stat-icon"><i class="fa fa-undo" aria-hidden="true"></i></span>
+                                <div class="mini-stat-info text-right">
+                                    历史uv <span class="counter" th:text="${statistics.uv}"></span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="row">
@@ -61,7 +80,8 @@
                                         <li class="list-group-item" th:each="article : ${articles}">
                             <span class="badge badge-primary"
                                   th:title="${article.commentsNum}+'条评论'" th:text="${article.commentsNum}"></span>
-                                            <a target="_blank" th:href="${commons.site_url('/blog/article/')}+${article.cid}"
+                                            <a target="_blank"
+                                               th:href="${commons.site_url('/blog/article/')}+${article.cid}"
                                                th:text="${article.title}"></a>
                                         </li>
                                     </ul>
@@ -86,8 +106,11 @@
                                                 <a th:href="@{${comment.url}}" target="_blank"
                                                    th:text="${comment.author}"></a>
                                             </div>
-                                            <th:block th:unless="${comment.url}!=null and ${comment.url}!=''" th:text="${comment.author}"/>
-                                            于<th:block th:text="${commons.fmtdate(comment.created,'MM月dd日HH:mm')}"/>：<a
+                                            <th:block th:unless="${comment.url}!=null and ${comment.url}!=''"
+                                                      th:text="${comment.author}"/>
+                                            于
+                                            <th:block th:text="${commons.fmtdate(comment.created,'MM月dd日HH:mm')}"/>
+                                            ：<a
                                                 th:href="${commons.site_url('/blog/article/')}+${comment.cid}+'#comments-content'"
                                                 target="_blank" th:utext="${commons.article(comment.content)}"></a>
                                         </li>
@@ -101,7 +124,7 @@
                                     <h4 class="panel-title">系统日志</h4>
                                 </div>
                                 <div class="panel-body">
-                                    <ul class="list-group" >
+                                    <ul class="list-group">
                                         <li class="list-group-item" th:each="log : ${logs}">
                                             <span th:text="${commons.fmtdate(log.created, 'yyyy-MM-dd HH:mm:ss')} +' => '+ ${log.action}"></span>
                                         </li>

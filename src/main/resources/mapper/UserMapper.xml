@@ -58,10 +58,12 @@
         INSERT INTO
         <include refid="BASE_PV"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            id, ip, created
+            id, ip, created,country,city,isp
         </trim>
         <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
-            #{id, jdbcType=VARCHAR},#{ip, jdbcType=VARCHAR}, UNIX_TIMESTAMP(NOW()),
+            #{id, jdbcType=VARCHAR},#{ip, jdbcType=VARCHAR}, NOW(),
+            #{country, jdbcType=VARCHAR},#{city, jdbcType=VARCHAR},
+            #{isp, jdbcType=VARCHAR},
         </trim>
     </insert>
 

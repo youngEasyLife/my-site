@@ -2,23 +2,20 @@ package cn.luischen.service.user.impl;
 
 import cn.luischen.constant.ErrorConstant;
 import cn.luischen.dao.UserDao;
-import cn.luischen.dto.cond.UserCond;
 import cn.luischen.exception.BusinessException;
 import cn.luischen.model.PvDomain;
 import cn.luischen.model.UserDomain;
 import cn.luischen.service.user.UserService;
 import cn.luischen.utils.TaleUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-
 import java.util.UUID;
 
 import static cn.luischen.api.senEmail.sendMailBySSL;
-import static cn.luischen.service.commEmail.sendTextMail;
+import static cn.luischen.utils.GetAddressByIP.getAddressByIP;
 
 /**
  * Created by Donghua.Chen on 2018/4/20.
@@ -68,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insertTPv(String ip) {
-        PvDomain pvDomain = new PvDomain();
+        PvDomain pvDomain = getAddressByIP(ip);
         pvDomain.setId(UUID.randomUUID().toString());
         pvDomain.setIp(ip);
         return userDao.insertTPv(pvDomain);

@@ -42,17 +42,18 @@ public class SiteServiceImpl implements SiteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SiteServiceImpl.class);
 
-    @Autowired
+    @Resource
     private CommentDao commentDao;
 
-    @Autowired
+    @Resource
     private ContentDao contentDao;
 
-    @Autowired
+    @Resource
     private MetaDao metaDao;
 
-    @Autowired
+    @Resource
     private AttAchDao attAchDao;
+
     @Resource
     private UserDao userDao;
 
@@ -93,7 +94,7 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    @Cacheable(value = "siteCache", key = "'statistics_'")
+//    @Cacheable(value = "siteCache", key = "'statistics_'")
     public StatisticsDto getStatistics() {
         LOGGER.debug("Enter recentStatistics method");
         //文章总数
@@ -114,7 +115,8 @@ public class SiteServiceImpl implements SiteService {
         rs.setAttachs(atts);
         rs.setComments(comments);
         rs.setLinks(links);
-
+        rs.setPv(pv);
+        rs.setUv(uv);
         LOGGER.debug("Exit recentStatistics method");
         return rs;
     }

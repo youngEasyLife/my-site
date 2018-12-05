@@ -1,5 +1,7 @@
 package cn.luischen.model;
 
+import java.util.Date;
+
 /**
  * @ClassName : pvDomain
  * @DesCription :TODO
@@ -12,7 +14,45 @@ public class PvDomain {
 
     private String ip;
 
-    private int created;
+    private Date created;
+
+    private String country;
+
+    private String city;
+
+    private String isp;
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getIsp() {
+        return isp;
+    }
+
+    public void setIsp(String isp) {
+        this.isp = isp;
+    }
 
     public String getId() {
         return id;
@@ -28,13 +68,5 @@ public class PvDomain {
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public int getCreated() {
-        return created;
-    }
-
-    public void setCreated(int created) {
-        this.created = created;
     }
 }

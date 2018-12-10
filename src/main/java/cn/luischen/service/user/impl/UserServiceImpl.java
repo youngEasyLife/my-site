@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.UUID;
 
+import static cn.luischen.api.SendEmailUtil.SendEmailUtils;
 import static cn.luischen.api.senEmail.sendMailBySSL;
 import static cn.luischen.utils.GetAddressByIP.getAddressByIP;
 
@@ -53,8 +54,11 @@ public class UserServiceImpl implements UserService {
             @Override
             public void run() {
                 try {
-                    if (sendMailBySSL(user.getEmail(), "欢迎登陆本系统", user.getUsername() + "你好吗?好久不见,欢迎登陆youngEasyLife系统,请多指教"))
-                        System.out.println("邮件发送成功");
+                    System.out.println("开始发送邮件");
+//                    SendEmailUtils(user.getEmail(), "wangpeiyang@yansu.com", "365597937mM!");
+                    if (sendMailBySSL(user.getEmail(), "致 尊敬的用户：  \n \n" +
+                            "       欢迎您登陆本系统,若有任何意见和建议，您可以写在文章或回复此邮件,谢谢。", "【" + user.getUsername() + "】欢迎登陆"))
+                        System.out.println("邮件发送完成");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

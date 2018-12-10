@@ -17,16 +17,16 @@ import java.io.IOException;
  */
 public class QiniuCloudService {
 
-    private static final String ACCESS_KEY = "YN9MbA-8tAaH9PVu7p_2S7vZXmMKT-VH6uaCMb4X";
-    private static final String SECRET_KEY = "ivc6yk2evKMOWIrTic--iYoa31DWDKKOrz83G65E";
+    private static final String ACCESS_KEY = "GCuK1qhkaDF2JQP_9A4_out0F4Ju3n37SrrOapsN";
+    private static final String SECRET_KEY = "4OKLabNisjOOPIt6VS5YgQ3Z1ISTujW6GIjYxzJu";
     /**
      * 仓库
      */
-    private static final String BUCKET = "my-site";
+    private static final String BUCKET = "youngeasylife";
     /**
      * 七牛云外网访问地址
      */
-    public static final String QINIU_UPLOAD_SITE = "http://img.winterchen.com/";
+    public static final String QINIU_UPLOAD_SITE = "http://pjij3upcl.bkt.clouddn.com/";
 
     public static String upload(MultipartFile file, String fileName) {
 

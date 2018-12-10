@@ -186,7 +186,7 @@ public class senEmail implements Serializable {
 
     public static void main(String[] args) {
         try {
-//            sendMailBySSL();
+            sendMailBySSL("365597937@qq.com", "欢迎登陆本系统", "你好吗?好久不见,欢迎登陆youngEasyLife系统,请多指教");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

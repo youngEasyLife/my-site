@@ -9,6 +9,7 @@ package cn.luischen.utils;
 
 import cn.luischen.model.PvDomain;
 import net.sf.json.JSONObject;
+import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -44,9 +45,12 @@ public class GetAddressByIP implements Serializable {
 
     public static PvDomain getAddressByIP(String ip) {
         PvDomain pvDomain = new PvDomain();
-        String resout;
+        String result;
         try {
             String str = getJsonContent("http://ip.taobao.com/service/getIpInfo.php?ip=" + ip);
+            if (StringUtils.isEmpty(str)) {
+                str = getJsonContent("http://ip.taobao.com/service/getIpInfo.php?ip=" + ip);
+            }
             System.out.println(str);
             JSONObject obj = JSONObject.fromObject(str);
             JSONObject obj2 = (JSONObject) obj.get("data");
@@ -55,16 +59,15 @@ public class GetAddressByIP implements Serializable {
                 pvDomain.setCountry(obj2.get("country").toString());
                 pvDomain.setCity(obj2.get("city").toString());
                 pvDomain.setIsp(obj2.get("isp").toString());
-                resout = obj2.get("country") + "--" + obj2.get("area") + "--" + obj2.get("city") + "--" + obj2.get("isp");
+                result = obj2.get("country") + "--" + obj2.get("area") + "--" + obj2.get("city") + "--" + obj2.get("isp");
             } else {
-                resout = "IP地址有误";
+                result = "IP地址有误";
             }
         } catch (Exception e) {
-
             e.printStackTrace();
-            resout = "获取IP地址异常：" + e.getMessage();
+            result = "获取IP地址异常：" + e.getMessage();
         }
-        System.out.println("result: " + resout);
+        System.out.println("result: " + result);
         return pvDomain;
     }
 

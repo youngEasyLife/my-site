@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static cn.luischen.api.SendEmailUtil.SendEmailUtils;
+
 /**
- *  请求日志
+ * 请求日志
  * Created by Donghua.Chen on 2018/4/29.
  */
 @Service
@@ -44,6 +46,12 @@ public class LogServiceImpl implements LogService {
         PageHelper.startPage(pageNum, pageSize);
         List<LogDomain> logs = logDao.getLogs();
         PageInfo<LogDomain> pageInfo = new PageInfo<>(logs);
+      /*  new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SendEmailUtils("365597937@qq.com", "service@yansu.com", "0*2m$hsl!yN9");
+            }
+        });*/
         return pageInfo;
     }
 }

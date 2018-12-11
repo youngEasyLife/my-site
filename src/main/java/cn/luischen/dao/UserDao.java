@@ -30,6 +30,10 @@ public interface UserDao {
      */
     UserDomain getUserInfoById(@Param("uid") Integer uId);
 
+
+    UserDomain findByUserName(@Param("userName") String userName);
+
+
     /**
      * 根据用户名和密码获取用户信息
      *

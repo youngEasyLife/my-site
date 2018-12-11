@@ -43,4 +43,20 @@ public interface UserService {
      */
     int insertTPv(String ip);
 
+    /**
+     * 根据
+     *
+     * @param userName
+     * @return
+     */
+    UserDomain findByUserName(String userName);
+
+    /**
+     * 获取permission
+     *
+     * @param userId
+     * @return
+     */
+    List<String> selectPermissionByUserId(Integer userId);
+
 }

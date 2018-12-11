@@ -39,6 +39,16 @@
         uid = #{uid, jdbcType=INTEGER}
     </select>
 
+    <select id="findByUserName" resultType="cn.luischen.model.UserDomain">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        WHERE
+        username = #{userName, jdbcType=INTEGER}
+    </select>
+
+
     <select id="getUserInfoByCond" resultType="cn.luischen.model.UserDomain">
         SELECT
         <include refid="BASE_COLUMN"/>

@@ -13,19 +13,24 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Calendar;
 
 /**
  * Created by Donghua.Chen on 2018/4/30.
@@ -48,6 +53,9 @@ public class AuthController extends BaseController {
     public String login() {
         Integer error_count = cache.get("login_error_count");
         System.out.println("获取失败次数" + error_count);
+/*        if (SecurityUtils.getSubject().isAuthenticated()) {
+            return "redirect:https://www.peiyoung.com/admin/index";
+        }*/
         return "admin/login";
     }
 
@@ -81,6 +89,9 @@ public class AuthController extends BaseController {
             }
             cache.set("login_error_count", 0);
             logService.addLog(userInfo.getUsername() + LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), userInfo.getUid());
+            Subject user = SecurityUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            user.login(token);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             error_count += 1;
@@ -116,6 +127,7 @@ public class AuthController extends BaseController {
         cookie.setPath("/");
         response.addCookie(cookie);
         try {
+            SecurityUtils.getSubject().logout();
             response.sendRedirect("/admin/login");
         } catch (IOException e) {
             e.printStackTrace();

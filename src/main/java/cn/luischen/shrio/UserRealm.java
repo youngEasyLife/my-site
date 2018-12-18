@@ -28,9 +28,9 @@ public class UserRealm extends AuthorizingRealm {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRealm.class);
+
     @Autowired
     private UserService sysUserService;
-
 
     /**
      * 授权

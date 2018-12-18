@@ -53,9 +53,9 @@ public class AuthController extends BaseController {
     public String login() {
         Integer error_count = cache.get("login_error_count");
         System.out.println("获取失败次数" + error_count);
-/*        if (SecurityUtils.getSubject().isAuthenticated()) {
-            return "redirect:https://www.peiyoung.com/admin/index";
-        }*/
+        if (SecurityUtils.getSubject().isAuthenticated()) {
+            return "redirect:/admin/index";
+        }
         return "admin/login";
     }
 

@@ -8,6 +8,7 @@ import cn.luischen.dto.cond.ContentCond;
 import cn.luischen.exception.BusinessException;
 import cn.luischen.model.CommentDomain;
 import cn.luischen.model.ContentDomain;
+import cn.luischen.service.WebSocketServer;
 import cn.luischen.service.comment.CommentService;
 import cn.luischen.service.content.ContentService;
 import cn.luischen.service.meta.MetaService;
@@ -22,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -33,6 +35,9 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
+
+import static cn.luischen.service.WebSocketServer.getOnlineCount;
 
 /**
  * 首页和关于我的页面控制器
@@ -41,6 +46,9 @@ import java.util.List;
 @Api("网站首页和关于页面")
 @Controller
 public class HomeController extends BaseController {
+
+    @Value("${root.path}")
+    private String rootPath;
 
     @Autowired
     private ContentService contentService;
@@ -71,8 +79,9 @@ public class HomeController extends BaseController {
 
     @ApiIgnore
     @GetMapping(value = {"/error/five"})
-    public String erroFive(HttpServletRequest request) {
-        return "error/500";
+    public String erroFive() {
+        System.out.println("无权限");
+        return "error/404";
     }
 
 
@@ -430,13 +439,19 @@ public class HomeController extends BaseController {
     @ApiOperation("作品主页")
     @GetMapping(value = {"", "/index"})
     public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
-      /*  new Thread(new Runnable() {
+       /* new Thread(new Runnable() {
             @Override
             public void run() {
                 String ip = getRemortIP(request);
                 userService.insertTPv(ip);
             }
         }).start();*/
+        try {
+            Integer res = WebSocketServer.getOnlineCount();
+            WebSocketServer.sendInfo(res.toString());
+        } catch (Exception e) {
+
+        }
         return this.index(1, limit, request);
     }
 
@@ -465,6 +480,7 @@ public class HomeController extends BaseController {
 
         request.setAttribute("archives", articles);
         request.setAttribute("active", "work");
+        request.setAttribute("rootPath", rootPath);
         return "site/index";
     }
 

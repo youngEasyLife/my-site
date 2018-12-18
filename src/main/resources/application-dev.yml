@@ -73,3 +73,7 @@ logging:
 
 swagger:
   show: true
+
+
+  root:
+    path: localhost:8080

@@ -10,6 +10,7 @@ import cn.luischen.utils.APIResponse;
 import cn.luischen.utils.GsonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ import java.util.Map;
 @Api("系统设置")
 @Controller
 @RequestMapping("/admin/setting")
+@RequiresPermissions("systemUserAdd")
 public class SettingController extends BaseController {
 
     @Autowired
@@ -39,7 +41,7 @@ public class SettingController extends BaseController {
 
     @ApiOperation("进入设置页")
     @GetMapping(value = "")
-    public String setting(HttpServletRequest request){
+    public String setting(HttpServletRequest request) {
         List<OptionsDomain> optionsList = optionService.getOptions();
         Map<String, String> options = new HashMap<>();
         optionsList.forEach((option) -> {
@@ -70,11 +72,6 @@ public class SettingController extends BaseController {
             return APIResponse.fail(e.getMessage());
         }
     }
-
-
-
-
-
 
 
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static cn.luischen.api.senEmail.sendMailBySSL;
 import static cn.luischen.utils.GetAddressByIP.getAddressByIP;
 
 /**
@@ -50,20 +51,20 @@ public class UserServiceImpl implements UserService {
         if (null == user) {
             throw BusinessException.withErrorCode(ErrorConstant.Auth.USERNAME_PASSWORD_ERROR);
         }
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    System.out.println("开始发送邮件");
-////                    SendEmailUtils(user.getEmail(), "wangpeiyang@yansu.com", "365597937mM!");
-//                    if (sendMailBySSL(user.getEmail(), "致 尊敬的用户：  \n \n" +
-//                            "       欢迎您登陆本系统,若有任何意见和建议，您可以写在文章或回复此邮件,谢谢。", "【" + user.getUsername() + "】欢迎登陆"))
-//                        System.out.println("邮件发送完成");
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("开始发送邮件");
+//                    SendEmailUtils(user.getEmail(), "wangpeiyang@yansu.com", "365597937mM!");
+                    if (sendMailBySSL(user.getEmail(), "致 尊敬的用户：  \n \n" +
+                            "       欢迎您登陆本系统,若有任何意见和建议，您可以写在文章或回复此邮件,谢谢。", "【" + user.getUsername() + "】欢迎登陆"))
+                        System.out.println("邮件发送完成");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         return user;
     }
 
@@ -85,9 +86,10 @@ public class UserServiceImpl implements UserService {
     public List<String> selectPermissionByUserId(Integer userId) {
         System.out.println("啊啊啊啊,什么时候调用啊");
         List<String> stringList = new ArrayList<>();
-//        if (userId == 2) {
-        stringList.add("systemUserAdd");
-//        }
+        System.out.println("userId==========>" + userId);
+        if (userId == 2) {
+            stringList.add("systemUserAdd");
+        }
         return stringList;
     }
 }

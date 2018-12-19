@@ -22,7 +22,7 @@
                 </header>
                 <p>生活在前 技术博客在后</p>
                 <p>简单生活 享受技术</p>
-                <p id="count">0</p>
+                <p id="count">当前在线人数为:1</p>
             </article>
         </section>
         <th:block th:each="archive,archiveStat : ${archives.list}">
@@ -114,7 +114,7 @@
         //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
         //socket = new WebSocket("ws://localhost:9094/starManager/websocket/张三")
         // socket = new WebSocket(urls);
-        socket = new WebSocket("ws://peiyoung.com/websocket");
+        socket = new WebSocket("wss://peiyoung.com/websocket");
         //打开事件
         socket.onopen = function () {
             console.log("Socket 已打开");
@@ -123,7 +123,7 @@
         //获得消息事件
         socket.onmessage = function (msg) {
             console.log(msg.data);
-            if (msg.data != "连接成功") {
+            if (msg.data != "连接成功" && msg.data != "{\"type\": \"ping\"}") {
                 $('#count').text("当前在线人数为：" + msg.data);
             }
             //发现消息进入    调后台获取
@@ -137,6 +137,12 @@
         socket.onerror = function () {
             console.log("Socket发生了错误");
         }
+
+        window.setInterval(function () { //每隔5秒钟发送一次心跳，避免websocket连接因超时而自动断开
+            var ping = {"type": "ping"};
+            socket.send(JSON.stringify(ping));
+        }, 50000);
+
         /* $(window).unload(function(){
              socket.close();
          });*/

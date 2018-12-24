@@ -2,6 +2,7 @@ package cn.luischen.shrio;
 
 import cn.luischen.model.UserDomain;
 import cn.luischen.service.user.UserService;
+import com.yansu.common.utils.BirUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -35,7 +36,7 @@ public class UserRealm extends AuthorizingRealm {
     /**
      * 授权
      *
-     * @param principals
+     * @param principals 在方法上加注解的时候注入
      * @return
      */
     @Override
@@ -51,7 +52,9 @@ public class UserRealm extends AuthorizingRealm {
     /**
      * 认证
      *
-     * @param authenticationToken
+     * @param authenticationToken 当调用Subject currentUser = SecurityUtils.getSubject();
+     *                            <p>
+     *                            currentUser.login(token);
      * @return
      * @throws AuthenticationException
      */
@@ -62,7 +65,13 @@ public class UserRealm extends AuthorizingRealm {
         if (sysUser == null) {
             return null;
         }
+//        自建仓库.并完成仓库基本方法的引用
+//        String age = BirUtils.getBirAgeSex("610322199103160314");
+
+
         LOGGER.info("doGetAuthenticationInfo");
+//        比对 密码 加盐 用户名
         return new SimpleAuthenticationInfo(sysUser, sysUser.getPassword().toCharArray(), ByteSource.Util.bytes(sysUser.getUsername()), getName());
     }
+
 }

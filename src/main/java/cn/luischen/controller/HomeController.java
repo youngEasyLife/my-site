@@ -439,13 +439,13 @@ public class HomeController extends BaseController {
     @ApiOperation("作品主页")
     @GetMapping(value = {"", "/index"})
     public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
-       /* new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 String ip = getRemortIP(request);
                 userService.insertTPv(ip);
             }
-        }).start();*/
+        }).start();
         try {
             Integer res = WebSocketServer.getOnlineCount();
             WebSocketServer.sendInfo(res.toString());

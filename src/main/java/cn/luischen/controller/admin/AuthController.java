@@ -89,6 +89,7 @@ public class AuthController extends BaseController {
             }
             cache.set("login_error_count", 0);
             logService.addLog(userInfo.getUsername() + LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), userInfo.getUid());
+//           shiro 认证
             Subject user = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             user.login(token);

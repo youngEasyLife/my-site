@@ -2,7 +2,6 @@ package cn.luischen.shrio;
 
 import cn.luischen.model.UserDomain;
 import cn.luischen.service.user.UserService;
-import com.yansu.common.utils.BirUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

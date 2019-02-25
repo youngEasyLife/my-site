@@ -8,12 +8,12 @@ import java.io.IOException;
 
 /**
  * ClassName : SendMQ
- * Description :TODO
+ * Description :
  * Author : young
  * Date: 2018/12/24 15:56
  **/
 public class SendMQ {
-    private final static String QUEUE_NAME = "Hellos";
+    private final static String QUEUE_NAME = "Hello";
 
     public static void main(String[] args) throws IOException, Exception {
         // connection是socket连接的抽象，并且为我们管理协议版本协商（protocol version negotiation），
@@ -29,7 +29,7 @@ public class SendMQ {
         // 接下来，我们创建一个channel，绝大部分API方法需要通过调用它来完成。
         // 发送之前，我们必须声明消息要发往哪个队列，然后我们可以向队列发一条消息：
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-        String message = "这是个RabbitMQ" ;
+        String message = "这是个RabbitMQ1";
         channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
         System.out.println(" [x] Sent '" + message + "'");
         channel.close();

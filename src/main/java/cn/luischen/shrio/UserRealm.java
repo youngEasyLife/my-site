@@ -65,9 +65,7 @@ public class UserRealm extends AuthorizingRealm {
             return null;
         }
 //        自建仓库.并完成仓库基本方法的引用
-//        String age = BirUtils.getBirAgeSex("610322199103160314");
-
-
+//        String age = BirUtils.getBirAgeSex("610322199302163414");
         LOGGER.info("doGetAuthenticationInfo");
 //        比对 密码 加盐 用户名
         return new SimpleAuthenticationInfo(sysUser, sysUser.getPassword().toCharArray(), ByteSource.Util.bytes(sysUser.getUsername()), getName());

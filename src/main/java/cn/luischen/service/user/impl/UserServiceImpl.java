@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> selectPermissionByUserId(Integer userId) {
-        System.out.println("啊啊啊啊,什么时候调用啊");
         List<String> stringList = new ArrayList<>();
         System.out.println("userId==========>" + userId);
         if (userId == 2) {

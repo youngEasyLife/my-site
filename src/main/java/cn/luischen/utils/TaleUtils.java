@@ -116,7 +116,7 @@ public class TaleUtils {
 
 
     public static void main(String args[]) {
-        System.out.println(MD5encode("qy123456"));
+        System.out.println(MD5encode("admin123456"));
 
     }
 

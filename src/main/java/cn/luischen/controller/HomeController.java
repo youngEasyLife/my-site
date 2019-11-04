@@ -15,7 +15,10 @@ import cn.luischen.service.meta.MetaService;
 import cn.luischen.service.option.OptionService;
 import cn.luischen.service.site.SiteService;
 import cn.luischen.service.user.UserService;
-import cn.luischen.utils.*;
+import cn.luischen.utils.APIResponse;
+import cn.luischen.utils.DateKit;
+import cn.luischen.utils.PatternKit;
+import cn.luischen.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
 import com.vdurmont.emoji.EmojiParser;
 import io.swagger.annotations.Api;
@@ -25,7 +28,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.Cookie;
@@ -35,9 +43,8 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
-import static cn.luischen.service.WebSocketServer.getOnlineCount;
+import static cn.luischen.utils.IPKit.getIpAddrByRequest;
 
 /**
  * 首页和关于我的页面控制器
@@ -371,7 +378,7 @@ public class HomeController extends BaseController {
             return APIResponse.fail("请输入200个字符以内的评论");
         }
 
-        String val = IPKit.getIpAddrByRequest(request) + ":" + cid;
+        String val = getIpAddrByRequest(request) + ":" + cid;
         Integer count = cache.hget(Types.COMMENTS_FREQUENCY.getType(), val);
         if (null != count && count > 0) {
             return APIResponse.fail("您发表评论太快了，请过会再试");
@@ -442,7 +449,7 @@ public class HomeController extends BaseController {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String ip = getRemortIP(request);
+                String ip = getIpAddrByRequest(request);
                 userService.insertTPv(ip);
             }
         }).start();

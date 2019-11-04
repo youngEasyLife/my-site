@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:fragment="header">
+<style>
+    .round_icon{
+        width: 34px;
+        height: 34px;
+        display: flex;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+</style>
 <header role="header">
     <meta name="baidu-site-verification" content="mLSAxYJrxD"/>
     <div class="container">
 
         <!-- logo -->
 
-        <h1><a th:href="@{/}" title="avana LLC"><img
-                th:src="@{http://img.winterchen.com/BF6AC5E5-C8D7-4841-B3ED-9D898586D5FF-9703-0000073B1BF8A7F8_tmp.PNG}"
+        <h1><a th:href="@{/}" title="avana LLC"><img class="round_icon"  th:src="@{/admin/images/dog.jpg}"
                 style="width: 66px;" title="欢迎" alt="欢迎"/></a></h1>
 
         <!-- logo -->
@@ -20,7 +30,7 @@
                 <li th:class="${active == 'work' ? 'nav-active':''}"><a th:href="@{/}" title="life">生活</a></li>
                 <li th:class="${active == 'about' ? 'nav-active':''}"><a th:href="@{/about}" title="About">About</a>
                 </li>
-                <li th:class="${active == 'blog' ? 'nav-active':''}"><a th:href="@{/blog/index}" title="Blog">博客</a>
+                <li th:class="${active == 'blog' ? 'nav-active':''}"><a th:href="@{/admin/index}" target="_blank" title="Blog">彩票</a>
                 </li>
             </ul>
         </nav>
